@@ -48,8 +48,8 @@ public class App {
   get("/classes/:id", (request, response) -> {
     HashMap<String, Object> model = new HashMap<String, Object>();
     int id = Integer.parseInt(request.params("id"));
-    Class class = Class.find(id);
-    model.put("class", class);
+    Class class1 = Class.find(id);
+    model.put("class", class1);
     model.put("allStudents", Student.all());
     model.put("template", "templates/class.vtl");
     return new ModelAndView(model, layout);
@@ -59,7 +59,7 @@ public class App {
     HashMap<String, Object> model = new HashMap<String, Object>();
     String name = request.queryParams("name");
     String date = request.queryParams("date");
-    Student newStudent = new savedStudent(name, date);
+    Student newStudent = new Student(name, date);
     newStudent.save();
     response.redirect("/students");
     return null;
@@ -78,9 +78,9 @@ public class App {
   post("/add_students", (request, response) -> {
     int studentId = Integer.parseInt(request.queryParams("student_id"));
     int classId = Integer.parseInt(request.queryParams("class_id"));
-    Class class = Class.find(classId);
+    Class class1 = Class.find(classId);
     Student student = Student.find(studentId);
-    class.addStudent(student);
+    class1.addStudent(student);
     response.redirect("/classes/" + classId);
     return null;
   });
@@ -88,10 +88,11 @@ public class App {
   post("/add_classes", (request, response) -> {
     int studentId = Integer.parseInt(request.queryParams("student_id"));
     int classId = Integer.parseInt(request.queryParams("class_id"));
-    Class class = Class.find(classId);
+    Class class1 = Class.find(classId);
     Student student = Student.find(studentId);
-    student.addClass(class);
+    student.addClass(class1);
     response.redirect("/students/" + studentId);
     return null;
   });
+  }
 }

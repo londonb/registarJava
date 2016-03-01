@@ -1,0 +1,25 @@
+class.vtl
+
+<h1>$class.getCourseName()</h1>
+
+#if($class.getStudents())
+  <p>Here are the students in this class:</p>
+  <ul>
+    #foreach($student in $class.getStudents())
+      <li>$student.getName()</li>
+    #end
+  </ul>
+#end
+
+<h4>Add a student to this class:</h4>
+
+<form action='/add_students' method='post'>
+    <input id="class_id" name="class_id" type="hidden" value="$class.getId()">
+    <label for="student_id">Select a Student</label>
+    <select id='student_id' name='student_id' type='text'>
+      #foreach($student in $allStudents)
+        <option value="$student.getId()"> $student.getName() </option>
+      #end
+    </select>
+    <button type='submit'>Add Student</button>
+</form>

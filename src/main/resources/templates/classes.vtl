@@ -1,0 +1,18 @@
+classes.vtl
+
+<h1>Class list!</h1>
+
+<p>Add a new class:</p>
+
+<form action="/classes" method="post">
+  <label for="course_name">Class Name</label>
+  <input id="course_name" name="course_name" type="text">
+  <label for="course_number">Class Number</label>
+  <input id="course_number" name="course_number" type="text">
+
+  <button type="submit">Add Class</button>
+</form>
+
+#foreach ($class in $classes)
+  <li><a href="/classes/$class.getId()">$class.getCourseName() $class.getCourseNumber()</a></li>
+#end

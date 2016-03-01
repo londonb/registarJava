@@ -1,0 +1,26 @@
+student.vtl
+
+<h2>Student Name: $student.getName()</h2>
+<h2>Enrollment Date: $student.getEnrollment()</h2>
+
+#if($student.getClasses())
+  <p>Here are the classes for this student:</p>
+  <ul>
+    #foreach($class in $student.getClasses())
+      <li>$class.getCourseName() $class.getCourseNumber()</li>
+    #end
+  </ul>
+#end
+
+<h4>Enroll a student in a class:</h4>
+
+<form action='/add_classes' method='post'>
+    <input id="student_id" name="student_id" type="hidden" value="$student.getId()">
+    <label for="class_id">Select a class</label>
+    <select id='class_id' name='class_id' type='text'>
+      #foreach($class in $allClasses)
+        <option value="$class.getId()"> $class.getCourseName() $class.getCourseNumber() </option>
+      #end
+    </select>
+    <button type='submit'>Add class</button>
+</form>
