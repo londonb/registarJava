@@ -53,4 +53,44 @@ public class Student {
         .getKey();
     }
   }
+
+  public static Student find(int id) {
+  try(Connection con = DB.sql2o.open()) {
+    String sql = "SELECT * FROM students where id=:id";
+    Student student = con.createQuery(sql)
+      .addParameter("id", id)
+      .executeAndFetchFirst(Student.class);
+    return student;
+    }
+  }
+
+  public void addClass(Class class1) {
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "INSERT INTO students_classes (student_id, class_id) VALUES (:student_id, :class_id)";
+      con.createQuery(sql)
+        .addParameter("student_id", this.getId())
+        .addParameter("class_id", class1.getId())
+        .executeUpdate();
+    }
+  }
+
+  public ArrayList<Class> getClasses() {
+    try(Connection con = DB.sql2o.open()) {
+      String sql = "SELECT DISTINCT class_id FROM students_classes WHERE student_id = :student_id";
+      List<Integer> classIds = con.createQuery(sql)
+        .addParameter("student_id", this.getId())
+        .executeAndFetch(Integer.class);
+
+      ArrayList<Class> classes = new ArrayList<Class>();
+
+      for (Integer classId : classIds) {
+        String classQuery = "SELECT * FROM classes WHERE id = :class_id";
+        Class class1 = con.createQuery(classQuery)
+          .addParameter("class_id", classId)
+          .executeAndFetchFirst(Class.class);
+          classes.add(class1);
+        }
+    return classes;
+    }
+  }
 }
